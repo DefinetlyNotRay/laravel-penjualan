@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware(['guest'])->group(function(){
+    Route::get('/',[UserController::class, 'index'])->name('login');;    
+
+    Route::post('/login',[UserController::class, 'login']);    
+
+
+});
+Route::get('/home', function(){
+    return redirect('/dashboard');
+});
+
+
+
+
+Route::middleware(['auth','no-cache'])->group(function(){
+    Route::get('/dashboardAdmin', [AdminController::class,'admin']);
+    Route::get('/dashboardKasir', [AdminController::class,'kasir']);
+
+    Route::get('/logout',[UserController::class, 'logout']);
 });
