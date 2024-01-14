@@ -1,8 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BarangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,8 @@ Route::middleware(['guest'])->group(function(){
 
 });
 Route::get('/home', function(){
+
+    
     return redirect('/dashboard');
 });
 
@@ -34,4 +38,5 @@ Route::middleware(['auth','no-cache'])->group(function(){
     Route::get('/dashboardKasir', [AdminController::class,'kasir']);
 
     Route::get('/logout',[UserController::class, 'logout']);
+    Route::get('/getHarga', [BarangController::class,'getHarga']);
 });
