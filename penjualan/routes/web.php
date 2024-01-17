@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\strukController;
 use App\Http\Controllers\BarangController;
 
 /*
@@ -36,7 +37,7 @@ Route::get('/home', function(){
 Route::middleware(['auth','no-cache'])->group(function(){
     Route::get('/dashboardAdmin', [AdminController::class,'admin']);
     Route::get('/dashboardKasir', [AdminController::class,'kasir']);
-
+    Route::get('/print', [strukController::class,'struk']);
     Route::get('/logout',[UserController::class, 'logout']);
     Route::get('/getHarga', [BarangController::class,'getHarga']);
 });

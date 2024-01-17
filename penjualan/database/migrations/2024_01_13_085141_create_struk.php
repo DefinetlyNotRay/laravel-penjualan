@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('diskon');
             $table->integer('total');
             $table->integer('tunai');
+            $table->integer('jumlah-total');
             $table->integer('kembalian');
             $table->timestamps();
            

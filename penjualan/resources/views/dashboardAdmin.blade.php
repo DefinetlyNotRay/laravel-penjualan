@@ -11,13 +11,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>|
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-    
+    @push('head')
+    <script src="{{ asset('js/components/script.js')}}"></script>
+    @endpush
 
 
 
     
     <title>Kasir</title>
+    
 </head>
 <body>
     @auth
@@ -82,13 +84,13 @@
                             </td>
                             <td
                             class="px-6 py-4 text-left border-r whitespace-nowrap dark:border-neutral-500">
-                            Mark
+                            
                             </td>
                             <td
                             class="px-6 py-4 border-r whitespace-nowrap dark:border-neutral-500">
-                            Otto
+                            
                             </td>
-                            <td class="px-6 py-4 border-r whitespace-nowrap dark:border-neutral-500">@mdo</td>
+                            <td class="px-6 py-4 border-r whitespace-nowrap dark:border-neutral-500"></td>
                             <td class="px-6 py-4 whitespace-nowrap"> <button class="pt-2 pb-2 text-center text-white bg-danger" onclick="deleteRow(this)">
                             Delete
                         </button> </td>
@@ -285,16 +287,23 @@
                             Total Item
                             </td>
                            
-                            <td colspan="1"
+                            <td colspan="1" id="jumlah-qty"
                             class="px-6 py-4 border-r whitespace-nowrap dark:border-neutral-500">
-                                
+                            0
                             </td>
-                            <td colspan="2"
+                            <td colspan="1" id="harga-jumlah"
                             class="px-6 py-4 border-r whitespace-nowrap dark:border-neutral-500">
-                                
+                                0
+                            </td>
+                            <td colspan="1" id="harga-diskon"
+                            class="px-6 py-4 border-r whitespace-nowrap dark:border-neutral-500">
+                                <input type="text" name="diskon" id="diskon" placeholder="diskon" class="w-[53px] h-[20px] text-xs" onchange="diskon()">
                             </td>
                            
                         </tr>
+                        <tr><td colspan="2" class="border-r whitespace-nowrap dark:border-neutral-500"><input placeholder="Tunai" class="w-full h-[30px] text-sm"  type="text" name="jumlah-tunai" id="jumlah-tunai" onchange="kembalianChange()"></td>
+                    <td colspan="3" class="border-r whitespace-nowrap dark:border-neutral-500"><input placeholder="Kembalian" class="w-full h-[30px] text-sm"  type="text" id="kembalian" name="kembalian" ></td></tr>
+
                     </table>
                     </div>
                 </div>
@@ -309,14 +318,14 @@
                         <input type="text" id="searchInput" oninput="filterOptions()" placeholder="Search...">
                         <select id="searchComboBox">
                             @foreach($barang as $items)
-                            <option value="{{ $items->id_barang }}">{{ $items->nama_barang }}</option>
+                            <option value="{{ $items->nama_barang }}">{{ $items->nama_barang }}</option>
                             @endforeach
                             
                         </select>
                     </div>
                     <div class="flex flex-col w-18">
                         <label for="">Quantitas</label>
-                        <input type="text" id="quantitasInput" >
+                        <input type="text" id="quantitasInput" value="0">
                     </div>
                     {{-- <div class="flex flex-col w-14">
                         <label for="">Diskon</label>
@@ -325,108 +334,223 @@
                 </div>
               
                 <div class="flex flex-col gap-10">
-                    <button class="pt-2 pb-2 text-center text-white cursor-pointer bg-success" onclick="handleFormSubmit()">Enter</button></
-                    <a href="/print" class="pt-2 pb-2 text-center text-white cursor-pointer bg-info"><button >Print Struk</button></a> 
-                </div>
+                    <button class="pt-2 pb-2 text-center text-white cursor-pointer bg-success" onclick="handleFormSubmit()">Enter</button>
+                    <button class="pt-2 pb-2 text-center text-white cursor-pointer bg-info" onclick="printF()" >Print Struk</button>
                 
-            </div>
+                </div>
             <div></div>
         </div>
       </section>
-  
-    
-    @endauth
-    
-    <script>
-          var originalOptions = Array.from(document.getElementById('searchComboBox').options);
+      <script>
+        
+        var originalOptions = Array.from(document.getElementById('searchComboBox').options);
+        function filterOptions() {
+            // Get the input value
+            var input = document.getElementById('searchInput').value.toLowerCase();
+            
+            // Filter the options based on the input
+            var filteredOptions = originalOptions.filter(function (option) {
+                return option.value.toLowerCase().includes(input);
+            });
 
-function filterOptions() {
-    // Get the input value
-    var input = document.getElementById('searchInput').value.toLowerCase();
+            // Clear the current options
+            document.getElementById('searchComboBox').innerHTML = '';
 
-    // Filter the options based on the input
-    var filteredOptions = originalOptions.filter(function (option) {
-        return option.value.toLowerCase().includes(input);
-    });
+            // Append the filtered options to the combo box
+            filteredOptions.forEach(function (option) {
+                document.getElementById('searchComboBox').appendChild(option.cloneNode(true));
+            });
+        }
+        function diskon() {
+    const diskon = parseFloat(document.getElementById('diskon').value);
+    const jumlahHarga = parseFloat(document.getElementById('harga-jumlah').textContent);
+    const discountedHarga = jumlahHarga - (jumlahHarga * (diskon / 100));
 
-    // Clear the current options
-    document.getElementById('searchComboBox').innerHTML = '';
-
-    // Append the filtered options to the combo box
-    filteredOptions.forEach(function (option) {
-        document.getElementById('searchComboBox').appendChild(option.cloneNode(true));
-    });
+    // Update the content of the total harga cell
+    document.getElementById("harga-jumlah").textContent = discountedHarga;
 }
-function handleFormSubmit() {
+        function updateTotalHarga() {
+            var tableBody = document.getElementById("tableBody");
+            var totalHarga = 0;
+
+            // Iterate through rows to calculate total harga
+            for (var i = 0; i < tableBody.rows.length; i++) {
+                var hargaCell = tableBody.rows[i].cells[3];
+                var hargaValue = parseFloat(hargaCell.textContent.trim());
+
+                if (!isNaN(hargaValue)) {
+                    totalHarga += hargaValue;
+                }
+            }
+
+            // Update the content of the total harga cell
+            document.getElementById("harga-jumlah").textContent = totalHarga;
+        }
+        function jumlahBarang() {
+            var tableBody = document.getElementById("tableBody");
+            var totalBarang = 0;
+
+            // Iterate through rows to calculate total harga
+            for (var i = 0; i < tableBody.rows.length; i++) {
+                var barang = tableBody.rows[i].cells[2];
+                var barangValue = parseFloat(barang.textContent.trim());
+
+                if (!isNaN(barangValue)) {
+                    totalBarang += barangValue;
+                }
+            }
+
+            // Update the content of the total harga cell
+            document.getElementById("jumlah-qty").textContent = totalBarang;
+        }
+        
+        function findEmptyRow(tableBody) {
+        // Iterate through rows to find an existing empty row
+        for (var i = 0; i < tableBody.rows.length; i++) {
+            if (tableBody.rows[i].cells[1].textContent.trim() === "") {
+                return tableBody.rows[i];
+            }
+        }
+        return null;
+        }
+        async function handleFormSubmit() {
     var selectedOption = document.getElementById("searchComboBox").value;
     var quantitas = document.getElementById("quantitasInput").value;
 
-    // Use AJAX to fetch harga from the server
-    $.ajax({
-        url: '/getHarga',
-        method: 'GET',
-        data: { id_barang: selectedOption },
-        success: function (response) {
-            if (response.harga !== undefined) {
-                // Check if there is an existing empty row
-                var tableBody = document.getElementById("tableBody");
-                var emptyRow = findEmptyRow(tableBody);
+    // Validate the quantity
+    if (!isFinite(quantitas) || parseFloat(quantitas) <= 0) {
+        alert("Please enter a valid quantity greater than zero.");
+        return false; // Prevent form submission
+    }
 
-                if (emptyRow) {
-                    // Use the existing empty row to update values
-                    updateRow(emptyRow, selectedOption, quantitas, response);
-                } else {
-                    // If no existing empty row is found, create a new row
-                    var newRow = createNewRow(tableBody, selectedOption, quantitas, response);
-                    tableBody.appendChild(newRow);
-                }
+    // Use AJAX to fetch harga from the server
+    try {
+        var response = await $.ajax({
+            url: '/getHarga',
+            method: 'GET',
+            data: { nama_barang: selectedOption }
+        });
+
+        if (response.harga !== undefined) {
+            // Check if there is an existing empty row
+            var tableBody = document.getElementById("tableBody");
+            var emptyRow = findEmptyRow(tableBody);
+
+            if (emptyRow) {
+                // Use the existing empty row to update values
+                updateRow(emptyRow, selectedOption, quantitas, response);
             } else {
-                alert("Harga not found for the selected option");
+                // If no existing empty row is found, create a new row
+                var newRow = createNewRow(tableBody, selectedOption, quantitas, response);
+                tableBody.appendChild(newRow);
             }
-        },
-        error: function (xhr, status, error) {
-            alert("Error fetching harga: " + error);
+
+            // Update the total harga
+            jumlahBarang();
+            updateTotalHarga();
+        } else {
+            alert("Harga not found for the selected option");
         }
-    });
+    } catch (error) {
+        alert("Error fetching harga: " + error);
+    }
+
+    // Clear input fields for the next entry
+    document.getElementById("searchInput").value = "";
+    document.getElementById("quantitasInput").value = "";
 
     return false; // Prevent form submission
 }
 
-function findEmptyRow(tableBody) {
-    // Iterate through rows to find an existing empty row
-    for (var i = 0; i < tableBody.rows.length; i++) {
-        if (tableBody.rows[i].cells[1].textContent.trim() === "") {
-            return tableBody.rows[i];
+function kembalianChange() {
+    const tunai = parseFloat(document.getElementById('jumlah-tunai').value);
+    const jumlahHarga = parseFloat(document.getElementById('harga-jumlah').textContent);
+    const kembalianInput = document.getElementById('kembalian'); // Get the actual input element
+    const kembalian = tunai - jumlahHarga;
+    kembalianInput.value = kembalian;
+}
+
+    function printF() {
+        const jumlahHarga = parseFloat(document.getElementById('harga-jumlah').textContent);
+        const qty = document.getElementById('jumlah-qty').textContent;
+        const diskon = parseFloat(document.getElementById('diskon').value);
+        const tunai = parseFloat(document.getElementById('jumlah-tunai').value);
+        const kembalian = parseFloat(document.getElementById('kembalian').value);
+        const tableRows = document.getElementById("tableBody").getElementsByTagName('tr');
+        const userid = {{ auth()->user()->id }};
+        var secondColumnValues = [];
+        var thirdColumnValues = [];
+            // Iterate through rows to calculate total harga
+            for (var i = 0; i < tableRows.length; i++) {
+                
+                var secondColumnCell = tableRows[i].cells[1];
+                var thirdColumnCell = tableRows[i].cells[2];
+                var value = secondColumnCell.textContent.trim();
+                var qts = thirdColumnCell.textContent.trim();
+                if(value === "" ||  qts === ""){
+                    break;
+                }
+                secondColumnValues.push(value);
+                thirdColumnValues.push(qts);
+                console.log("Values from the second column:", secondColumnValues);
+                console.log("Values from the third column:", thirdColumnValues);
+            }
+
+
+        // Calculate the discounted total harga
+        const discountedHarga = jumlahHarga - (jumlahHarga * (diskon / 100));
+
+        // Send data to the server
+        $.ajax({
+            url: '/print',
+            method: 'GET',
+            data: {
+                hargaValue: jumlahHarga,
+                diskonValue: diskon,
+                discountedHargaValue: discountedHarga,
+                qtyValue: qty,
+                barangValues: secondColumnValues,
+                quantitasBarang: thirdColumnValues,
+                user: userid,
+                jumlahTunai: tunai,
+
+                
+            },
+            success: function (response) {
+                console.log(response.message);
+            },
+            error: function (error) {
+                console.error("Error:", error);
+            }
+        });
         }
-    }
-    return null;
-}
 
-function updateRow(row, selectedOption, quantitas, response) {
-    // Update the content of the existing empty row
-    row.cells[1].textContent = response.nama;
-    row.cells[2].textContent = quantitas;
-    row.cells[3].textContent = response.harga * quantitas;
-}
+        function updateRow(row, selectedOption, quantitas, response) {
+        // Update the content of the existing empty row
+        row.cells[1].textContent = response.nama;
+        row.cells[2].textContent = quantitas;
+        row.cells[3].textContent = response.harga * quantitas;
+        }
 
-function createNewRow(tableBody, selectedOption, quantitas, response) {
-    // Clone the structure of the original row
-    var originalRow = tableBody.rows[0]; // Assuming the original row is the first row
-    var newRow = originalRow.cloneNode(true);
+        function createNewRow(tableBody, selectedOption, quantitas, response) {
+        // Clone the structure of the original row
+        var originalRow = tableBody.rows[0]; // Assuming the original row is the first row
+        var newRow = originalRow.cloneNode(true);
+        newRow.classList.remove('original-row');
 
-    // Update the content of the new row
-    newRow.cells[0].textContent = tableBody.rows.length;
-    newRow.cells[1].textContent = response.nama;
-    newRow.cells[2].textContent = quantitas;
-    newRow.cells[3].textContent = response.harga * quantitas;
+        // Update the content of the new row
+        newRow.cells[0].textContent = tableBody.rows.length;
+        newRow.cells[1].textContent = response.nama;
+        newRow.cells[2].textContent = quantitas;
+        newRow.cells[3].textContent = response.harga * quantitas;
 
-    // Clear the content of the last cell (Delete button)
-    newRow.cells[4].innerHTML = '<a href="#" onclick="deleteRow(this)" class="pt-2 pb-2 text-center text-white bg-danger"><button>Delete</button></a>';
+        // Clear the content of the last cell (Delete button)
+        newRow.cells[4].innerHTML = '<a href="#" onclick="deleteRow(this)" class="pt-2 pb-2 text-center text-white bg-danger"><button>Delete</button></a>';
 
-    return newRow;
-}
+        return newRow;
+        }
 
-function deleteRow(button) {
+        function deleteRow(button) {
         var row = button.parentNode.parentNode;
 
         // Check if the row has cells before trying to access them
@@ -437,16 +561,29 @@ function deleteRow(button) {
             if (!isOriginalRow) {
                 // If the row is not an original row, remove the entire row
                 row.remove();
+                // Update the total harga after deleting the row
+                updateTotalHarga();
+                jumlahBarang()
             } else {
                 // If it's an original row, clear the content of cells (excluding the first cell)
                 for (var i = 1; i < row.cells.length - 1; i++) {
                     row.cells[i].textContent = "";
                 }
+                // Update the total harga after deleting the row
+                jumlahBarang()
+                updateTotalHarga();
             }
         }
-    }
+        }
+
+
+
 
     </script>
+    
+    @endauth
+    
+   
     
     
 
