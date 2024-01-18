@@ -38,16 +38,16 @@
         <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 nav-close" id="navbar-sticky"  >
           <ul class="flex flex-col p-4 mt-4 font-medium border rounded-lg md:p-0 bg-primary md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-primary dark:bg-gray-900 md:dark:bg-primary dark:border-gray-700">
             <li>
-              <a href="#" class="block px-3 py-2 font-bold text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Kasir</a>
+              <a href="/dashboardAdmin" class="block px-3 py-2 font-bold text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Kasir</a>
             </li>
             <li>
-              <a href="#" class="block px-3 py-2 text-white rounded hover:bg-black md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">CRUD Barang</a>
+              <a href="/CRUDBarang" class="block px-3 py-2 text-white rounded hover:bg-black md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">CRUD Barang</a>
             </li>
             <li>
-              <a href="#" class="block px-3 py-2 text-white rounded hover:bg-black md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">CRUD Akun</a>
+              <a href="/CRUDKasir" class="block px-3 py-2 text-white rounded hover:bg-black md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">CRUD Akun</a>
             </li>
             <li>
-                <a href="#" class="block px-3 py-2 text-white rounded hover:bg-black md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">History</a>
+                <a href="/history" class="block px-3 py-2 text-white rounded hover:bg-black md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">History</a>
               </li>
           </ul>
         </div>
@@ -343,238 +343,238 @@
       </section>
       <script>
         
-        var originalOptions = Array.from(document.getElementById('searchComboBox').options);
-        function filterOptions() {
-            // Get the input value
-            var input = document.getElementById('searchInput').value.toLowerCase();
+            var originalOptions = Array.from(document.getElementById('searchComboBox').options);
+            function filterOptions() {
+                // Get the input value
+                var input = document.getElementById('searchInput').value.toLowerCase();
+                
+                // Filter the options based on the input
+                var filteredOptions = originalOptions.filter(function (option) {
+                    return option.value.toLowerCase().includes(input);
+                });
+
+                // Clear the current options
+                document.getElementById('searchComboBox').innerHTML = '';
+
+                // Append the filtered options to the combo box
+                filteredOptions.forEach(function (option) {
+                    document.getElementById('searchComboBox').appendChild(option.cloneNode(true));
+                });
+            }
+            function diskon() {
+            const diskon = parseFloat(document.getElementById('diskon').value);
+            const jumlahHarga = parseFloat(document.getElementById('harga-jumlah').textContent);
+            const discountedHarga = jumlahHarga - (jumlahHarga * (diskon / 100));
+
+            // Update the content of the total harga cell
+            document.getElementById("harga-jumlah").textContent = discountedHarga;
+            }
+            function updateTotalHarga() {
+                var tableBody = document.getElementById("tableBody");
+                var totalHarga = 0;
+
+                // Iterate through rows to calculate total harga
+                for (var i = 0; i < tableBody.rows.length; i++) {
+                    var hargaCell = tableBody.rows[i].cells[3];
+                    var hargaValue = parseFloat(hargaCell.textContent.trim());
+
+                    if (!isNaN(hargaValue)) {
+                        totalHarga += hargaValue;
+                    }
+                }
+
+                // Update the content of the total harga cell
+                document.getElementById("harga-jumlah").textContent = totalHarga;
+            }
+            function jumlahBarang() {
+                var tableBody = document.getElementById("tableBody");
+                var totalBarang = 0;
+
+                // Iterate through rows to calculate total harga
+                for (var i = 0; i < tableBody.rows.length; i++) {
+                    var barang = tableBody.rows[i].cells[2];
+                    var barangValue = parseFloat(barang.textContent.trim());
+
+                    if (!isNaN(barangValue)) {
+                        totalBarang += barangValue;
+                    }
+                }
+
+                // Update the content of the total harga cell
+                document.getElementById("jumlah-qty").textContent = totalBarang;
+            }
             
-            // Filter the options based on the input
-            var filteredOptions = originalOptions.filter(function (option) {
-                return option.value.toLowerCase().includes(input);
-            });
-
-            // Clear the current options
-            document.getElementById('searchComboBox').innerHTML = '';
-
-            // Append the filtered options to the combo box
-            filteredOptions.forEach(function (option) {
-                document.getElementById('searchComboBox').appendChild(option.cloneNode(true));
-            });
-        }
-        function diskon() {
-    const diskon = parseFloat(document.getElementById('diskon').value);
-    const jumlahHarga = parseFloat(document.getElementById('harga-jumlah').textContent);
-    const discountedHarga = jumlahHarga - (jumlahHarga * (diskon / 100));
-
-    // Update the content of the total harga cell
-    document.getElementById("harga-jumlah").textContent = discountedHarga;
-}
-        function updateTotalHarga() {
-            var tableBody = document.getElementById("tableBody");
-            var totalHarga = 0;
-
-            // Iterate through rows to calculate total harga
+            function findEmptyRow(tableBody) {
+            // Iterate through rows to find an existing empty row
             for (var i = 0; i < tableBody.rows.length; i++) {
-                var hargaCell = tableBody.rows[i].cells[3];
-                var hargaValue = parseFloat(hargaCell.textContent.trim());
-
-                if (!isNaN(hargaValue)) {
-                    totalHarga += hargaValue;
+                if (tableBody.rows[i].cells[1].textContent.trim() === "") {
+                    return tableBody.rows[i];
                 }
             }
+            return null;
+            }
+            async function handleFormSubmit() {
+        var selectedOption = document.getElementById("searchComboBox").value;
+        var quantitas = document.getElementById("quantitasInput").value;
 
-            // Update the content of the total harga cell
-            document.getElementById("harga-jumlah").textContent = totalHarga;
+        // Validate the quantity
+        if (!isFinite(quantitas) || parseFloat(quantitas) <= 0) {
+            alert("Please enter a valid quantity greater than zero.");
+            return false; // Prevent form submission
         }
-        function jumlahBarang() {
-            var tableBody = document.getElementById("tableBody");
-            var totalBarang = 0;
 
-            // Iterate through rows to calculate total harga
-            for (var i = 0; i < tableBody.rows.length; i++) {
-                var barang = tableBody.rows[i].cells[2];
-                var barangValue = parseFloat(barang.textContent.trim());
+        // Use AJAX to fetch harga from the server
+        try {
+            var response = await $.ajax({
+                url: '/getHarga',
+                method: 'GET',
+                data: { nama_barang: selectedOption }
+            });
 
-                if (!isNaN(barangValue)) {
-                    totalBarang += barangValue;
+            if (response.harga !== undefined) {
+                // Check if there is an existing empty row
+                var tableBody = document.getElementById("tableBody");
+                var emptyRow = findEmptyRow(tableBody);
+
+                if (emptyRow) {
+                    // Use the existing empty row to update values
+                    updateRow(emptyRow, selectedOption, quantitas, response);
+                } else {
+                    // If no existing empty row is found, create a new row
+                    var newRow = createNewRow(tableBody, selectedOption, quantitas, response);
+                    tableBody.appendChild(newRow);
                 }
-            }
 
-            // Update the content of the total harga cell
-            document.getElementById("jumlah-qty").textContent = totalBarang;
-        }
-        
-        function findEmptyRow(tableBody) {
-        // Iterate through rows to find an existing empty row
-        for (var i = 0; i < tableBody.rows.length; i++) {
-            if (tableBody.rows[i].cells[1].textContent.trim() === "") {
-                return tableBody.rows[i];
+                // Update the total harga
+                jumlahBarang();
+                updateTotalHarga();
+            } else {
+                alert("Harga not found for the selected option");
             }
+        } catch (error) {
+            alert("Error fetching harga: " + error);
         }
-        return null;
-        }
-        async function handleFormSubmit() {
-    var selectedOption = document.getElementById("searchComboBox").value;
-    var quantitas = document.getElementById("quantitasInput").value;
 
-    // Validate the quantity
-    if (!isFinite(quantitas) || parseFloat(quantitas) <= 0) {
-        alert("Please enter a valid quantity greater than zero.");
+        // Clear input fields for the next entry
+        document.getElementById("searchInput").value = "";
+        document.getElementById("quantitasInput").value = "";
+
         return false; // Prevent form submission
     }
 
-    // Use AJAX to fetch harga from the server
-    try {
-        var response = await $.ajax({
-            url: '/getHarga',
-            method: 'GET',
-            data: { nama_barang: selectedOption }
-        });
-
-        if (response.harga !== undefined) {
-            // Check if there is an existing empty row
-            var tableBody = document.getElementById("tableBody");
-            var emptyRow = findEmptyRow(tableBody);
-
-            if (emptyRow) {
-                // Use the existing empty row to update values
-                updateRow(emptyRow, selectedOption, quantitas, response);
-            } else {
-                // If no existing empty row is found, create a new row
-                var newRow = createNewRow(tableBody, selectedOption, quantitas, response);
-                tableBody.appendChild(newRow);
-            }
-
-            // Update the total harga
-            jumlahBarang();
-            updateTotalHarga();
-        } else {
-            alert("Harga not found for the selected option");
-        }
-    } catch (error) {
-        alert("Error fetching harga: " + error);
+    function kembalianChange() {
+        const tunai = parseFloat(document.getElementById('jumlah-tunai').value);
+        const jumlahHarga = parseFloat(document.getElementById('harga-jumlah').textContent);
+        const kembalianInput = document.getElementById('kembalian'); // Get the actual input element
+        const kembalian = tunai - jumlahHarga;
+        kembalianInput.value = kembalian;
     }
 
-    // Clear input fields for the next entry
-    document.getElementById("searchInput").value = "";
-    document.getElementById("quantitasInput").value = "";
-
-    return false; // Prevent form submission
-}
-
-function kembalianChange() {
-    const tunai = parseFloat(document.getElementById('jumlah-tunai').value);
-    const jumlahHarga = parseFloat(document.getElementById('harga-jumlah').textContent);
-    const kembalianInput = document.getElementById('kembalian'); // Get the actual input element
-    const kembalian = tunai - jumlahHarga;
-    kembalianInput.value = kembalian;
-}
-
-    function printF() {
-        const jumlahHarga = parseFloat(document.getElementById('harga-jumlah').textContent);
-        const qty = document.getElementById('jumlah-qty').textContent;
-        const diskon = parseFloat(document.getElementById('diskon').value);
-        const tunai = parseFloat(document.getElementById('jumlah-tunai').value);
-        const kembalian = parseFloat(document.getElementById('kembalian').value);
-        const tableRows = document.getElementById("tableBody").getElementsByTagName('tr');
-        const userid = {{ auth()->user()->id }};
-        var secondColumnValues = [];
-        var thirdColumnValues = [];
-            // Iterate through rows to calculate total harga
-            for (var i = 0; i < tableRows.length; i++) {
-                
-                var secondColumnCell = tableRows[i].cells[1];
-                var thirdColumnCell = tableRows[i].cells[2];
-                var value = secondColumnCell.textContent.trim();
-                var qts = thirdColumnCell.textContent.trim();
-                if(value === "" ||  qts === ""){
-                    break;
+        function printF() {
+            const jumlahHarga = parseFloat(document.getElementById('harga-jumlah').textContent);
+            const qty = document.getElementById('jumlah-qty').textContent;
+            const diskon = parseFloat(document.getElementById('diskon').value);
+            const tunai = parseFloat(document.getElementById('jumlah-tunai').value);
+            const kembalian = parseFloat(document.getElementById('kembalian').value);
+            const tableRows = document.getElementById("tableBody").getElementsByTagName('tr');
+            const userid = {{ auth()->user()->id }};
+            var secondColumnValues = [];
+            var thirdColumnValues = [];
+                // Iterate through rows to calculate total harga
+                for (var i = 0; i < tableRows.length; i++) {
+                    
+                    var secondColumnCell = tableRows[i].cells[1];
+                    var thirdColumnCell = tableRows[i].cells[2];
+                    var value = secondColumnCell.textContent.trim();
+                    var qts = thirdColumnCell.textContent.trim();
+                    if(value === "" ||  qts === ""){
+                        break;
+                    }
+                    secondColumnValues.push(value);
+                    thirdColumnValues.push(qts);
+                    console.log("Values from the second column:", secondColumnValues);
+                    console.log("Values from the third column:", thirdColumnValues);
                 }
-                secondColumnValues.push(value);
-                thirdColumnValues.push(qts);
-                console.log("Values from the second column:", secondColumnValues);
-                console.log("Values from the third column:", thirdColumnValues);
-            }
 
 
-        // Calculate the discounted total harga
-        const discountedHarga = jumlahHarga - (jumlahHarga * (diskon / 100));
+            // Calculate the discounted total harga
+            const discountedHarga = jumlahHarga - (jumlahHarga * (diskon / 100));
 
-        // Send data to the server
-        $.ajax({
-            url: '/print',
-            method: 'GET',
-            data: {
-                hargaValue: jumlahHarga,
-                diskonValue: diskon,
-                discountedHargaValue: discountedHarga,
-                qtyValue: qty,
-                barangValues: secondColumnValues,
-                quantitasBarang: thirdColumnValues,
-                user: userid,
-                jumlahTunai: tunai,
+            // Send data to the server
+            $.ajax({
+                url: '/print',
+                method: 'GET',
+                data: {
+                    hargaValue: jumlahHarga,
+                    diskonValue: diskon,
+                    discountedHargaValue: discountedHarga,
+                    qtyValue: qty,
+                    barangValues: secondColumnValues,
+                    quantitasBarang: thirdColumnValues,
+                    user: userid,
+                    jumlahTunai: tunai,
 
-                
-            },
-            success: function (response) {
-                console.log(response.message);
-            },
-            error: function (error) {
-                console.error("Error:", error);
-            }
-        });
-        }
-
-        function updateRow(row, selectedOption, quantitas, response) {
-        // Update the content of the existing empty row
-        row.cells[1].textContent = response.nama;
-        row.cells[2].textContent = quantitas;
-        row.cells[3].textContent = response.harga * quantitas;
-        }
-
-        function createNewRow(tableBody, selectedOption, quantitas, response) {
-        // Clone the structure of the original row
-        var originalRow = tableBody.rows[0]; // Assuming the original row is the first row
-        var newRow = originalRow.cloneNode(true);
-        newRow.classList.remove('original-row');
-
-        // Update the content of the new row
-        newRow.cells[0].textContent = tableBody.rows.length;
-        newRow.cells[1].textContent = response.nama;
-        newRow.cells[2].textContent = quantitas;
-        newRow.cells[3].textContent = response.harga * quantitas;
-
-        // Clear the content of the last cell (Delete button)
-        newRow.cells[4].innerHTML = '<a href="#" onclick="deleteRow(this)" class="pt-2 pb-2 text-center text-white bg-danger"><button>Delete</button></a>';
-
-        return newRow;
-        }
-
-        function deleteRow(button) {
-        var row = button.parentNode.parentNode;
-
-        // Check if the row has cells before trying to access them
-        if (row.cells) {
-            // Check if the row is an original row (assuming the class name of original rows is 'original-row')
-            var isOriginalRow = row.classList.contains('original-row');
-
-            if (!isOriginalRow) {
-                // If the row is not an original row, remove the entire row
-                row.remove();
-                // Update the total harga after deleting the row
-                updateTotalHarga();
-                jumlahBarang()
-            } else {
-                // If it's an original row, clear the content of cells (excluding the first cell)
-                for (var i = 1; i < row.cells.length - 1; i++) {
-                    row.cells[i].textContent = "";
+                    
+                },
+                success: function (response) {
+                    console.log(response.message);
+                },
+                error: function (error) {
+                    console.error("Error:", error);
                 }
-                // Update the total harga after deleting the row
-                jumlahBarang()
-                updateTotalHarga();
+            });
             }
-        }
-        }
+
+            function updateRow(row, selectedOption, quantitas, response) {
+            // Update the content of the existing empty row
+            row.cells[1].textContent = response.nama;
+            row.cells[2].textContent = quantitas;
+            row.cells[3].textContent = response.harga * quantitas;
+            }
+
+            function createNewRow(tableBody, selectedOption, quantitas, response) {
+            // Clone the structure of the original row
+            var originalRow = tableBody.rows[0]; // Assuming the original row is the first row
+            var newRow = originalRow.cloneNode(true);
+            newRow.classList.remove('original-row');
+
+            // Update the content of the new row
+            newRow.cells[0].textContent = tableBody.rows.length;
+            newRow.cells[1].textContent = response.nama;
+            newRow.cells[2].textContent = quantitas;
+            newRow.cells[3].textContent = response.harga * quantitas;
+
+            // Clear the content of the last cell (Delete button)
+            newRow.cells[4].innerHTML = '<a href="#" onclick="deleteRow(this)" class="pt-2 pb-2 text-center text-white bg-danger"><button>Delete</button></a>';
+
+            return newRow;
+            }
+
+            function deleteRow(button) {
+            var row = button.parentNode.parentNode;
+
+            // Check if the row has cells before trying to access them
+            if (row.cells) {
+                // Check if the row is an original row (assuming the class name of original rows is 'original-row')
+                var isOriginalRow = row.classList.contains('original-row');
+
+                if (!isOriginalRow) {
+                    // If the row is not an original row, remove the entire row
+                    row.remove();
+                    // Update the total harga after deleting the row
+                    updateTotalHarga();
+                    jumlahBarang()
+                } else {
+                    // If it's an original row, clear the content of cells (excluding the first cell)
+                    for (var i = 1; i < row.cells.length - 1; i++) {
+                        row.cells[i].textContent = "";
+                    }
+                    // Update the total harga after deleting the row
+                    jumlahBarang()
+                    updateTotalHarga();
+                }
+            }
+            }
 
 
 
