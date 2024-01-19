@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,8 @@ class AdminController extends Controller
     }
 
     public function crudkasir(){
-        return view('accounts');
+        $user = User::all();
+        return view('accounts', ['user' => $user]);
     }
 
     public function history(){
@@ -31,6 +33,10 @@ class AdminController extends Controller
     public function addView(){
         return view('addBarang');
     }
+
+    public function addViewKasir(){
+        return view('addKasir');
+    }
     
     public function editView($id){
         $barang = Barang::find($id);
@@ -38,5 +44,13 @@ class AdminController extends Controller
             return redirect('/CRUDBarang')->with('error', 'Barang not found');
         }
         return view('editBarang', ['barang' => $barang]);
+    }
+
+    public function editViewKasir($id){
+        $user = User::find($id);
+        if(!$user){
+            return redirect('/CRUDKasir')->with('error', 'user not found');
+        }
+        return view('editKasir', ['user' => $user]);
     }
 }

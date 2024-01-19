@@ -46,6 +46,129 @@
           </ul>
         </div>
         </div>
-      </nav>
+    </nav>
+    <div class="mt-20 overflow-x-hidden">
+        <div class="flex items-end mb-2">
+            <div>
+                <a class="p-2 ml-5 bg-blue-200 rounded pt-2 " href="/nameOrder/asc">Name ASC</a> <a class="p-2 bg-blue-200 rounded pt-2 " href="/nameOrder/desc">Name DESC </a> 
+
+            </div>
+            <div class="flex flex-col w-fit border-l-[4px] border-black ml-2">
+                <input type="text" name="" class="ml-2 mb-5" id="inputName" placeholder="Insert one character, E.g: a">
+                <div>
+                    <a class="p-2 bg-blue-200 ml-2 rounded pt-2" href="#" onclick="updateHref('left')">Name LIKE KIRI</a>
+                    <a class="p-2 bg-blue-200 rounded pt-2" href="#" onclick="updateHref('middle')">Name LIKE TENGAH</a>
+                    <a class="p-2 bg-blue-200 ml-2 rounded pt-2" href="#" onclick="updateHref('right')">Name LIKE KANAN</a>
+                </div>
+  
+            </div>
+        </div>
+       <div class="items-center ">
+           <div class="overflow-x-hidden sm:-mx-6 lg:-mx-8">
+               <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                   <div class="overflow-hidden">
+                   <table
+                       class="flex-col w-[1840px] ml-5 text-sm font-light text-center border dark:border-neutral-500">
+                       <thead class="font-medium text-left border-b dark:border-neutral-500">
+                           <tr>
+                               <thead class="font-medium text-left border-b dark:border-neutral-500">
+                                   <tr>
+                                       <th scope="col" class="w-10 px-6 py-4 text-left border-r dark:border-neutral-500">No</th>
+                                       <th scope="col" class="px-6 py-4 text-left border-r dark:border-neutral-500">Nama</th>
+                                       <th scope="col" class="w-16 px-2 py-4 text-center border-r dark:border-neutral-500">Password</th>
+                                       <th scope="col" class="w-10 w-32 px-6 py-4 text-center border-r dark:border-neutral-500">Level</th>
+                                       <th scope="col" class="w-10 px-6 py-4 text-center">Action</th>
+                                   </tr>
+                               </thead>
+                               
+                               
+                           </tr>
+                       </thead>
+                       <tbody id="tableBody">
+                        @php
+                        $no = 1; // Initialize $no before the loop
+                    @endphp
+                       
+                        @foreach($user as $users)
+                        <tr class="border-b dark:border-neutral-500 original-row">
+                        <td
+                        class="px-6 py-4 font-medium border-r whitespace-nowrap dark:border-neutral-500">
+                        {{$no++}}
+                        </td>
+                        <td
+                        class="px-6 py-4 text-left border-r whitespace-nowrap dark:border-neutral-500">
+                        {{$users->name}}
+                        </td>
+                        <td
+                        class="px-6 py-4 border-r whitespace-nowrap dark:border-neutral-500">
+                        {{$users->password}}
+                        </td>
+                        <td class="px-6 py-4 border-r whitespace-nowrap harga dark:border-neutral-500">
+                            {{ $users->level }}
+                        </td>
+                        <td class="flex gap-3 px-6 py-4 whitespace-nowrap"> 
+                         <a href="/userEdit/{{$users->id}}">
+                             <button class="pt-2 pb-2 pl-3 pr-3 text-center text-white bg-info" >
+                              Edit
+                         </button> 
+                         </a>
+                         <form action="/userDelete/{{$users->id}}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="p-2 pb-2 text-center text-white bg-danger" >
+                                Delete
+                           </button> 
+                        </form>
+                       
+                        </td>
+                    </tr>
+                    @endforeach
+                        <tr class="border-b dark:border-neutral-500 original-row">
+                           <td
+                           class="px-6 py-4 font-medium border-r whitespace-nowrap dark:border-neutral-500">
+                           {{$no++}}
+                           </td>
+                           <td
+                           class="px-6 py-4 text-left border-r whitespace-nowrap dark:border-neutral-500">
+                           
+                           </td>
+                           <td
+                           class="px-6 py-4 border-r whitespace-nowrap dark:border-neutral-500">
+                           
+                           </td>
+                           <td class="px-6 py-4 border-r whitespace-nowrap dark:border-neutral-500"></td>
+                           <td class="px-6 py-4 whitespace-nowrap"> 
+                            <a href="/kasirAdd">
+                                <button class="p-2 pb-2 text-center text-white bg-success" >
+                                 Add Barang+
+                            </button> 
+                            </a>
+                           </td>
+
+                           
+                       
+                       </tr>
+                       
+                      
+                       
+                       </tbody>
+                      
+                   </table>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+
+ <script>
+     function updateHref(position) {
+    console.log("Function called");
+    var inputText = document.getElementById('inputName').value;
+    console.log("Input text: " + inputText);
+    var href = "/nameLikeUser/" + position + "/" + inputText;
+    console.log("New href: " + href);
+    window.location.href = href;
+}
+ </script>
 </body>
 </html>

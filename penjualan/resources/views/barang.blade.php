@@ -50,7 +50,21 @@
 
         
         <div class="mt-20 overflow-x-hidden">
-            <button class="p-2 ml-5 bg-blue-200 rounded">Stock ASC</button> <button class="p-2 bg-blue-200 rounded">Stock DESC </button> <button class="p-2 bg-blue-200 rounded">Name LIKE KIRI</button> <button class="p-2 bg-blue-200 rounded">Name LIKE TENGAH</button><button class="p-2 bg-blue-200 rounded">Name LIKE KANAN</button>            
+            <div class="flex items-end mb-2">
+                <div>
+                    <a class="p-2 ml-5 bg-blue-200 rounded pt-2 " href="/stockOrder/asc">Stock ASC</a> <a class="p-2 bg-blue-200 rounded pt-2 " href="/stockOrder/desc">Stock DESC </a> 
+
+                </div>
+                <div class="flex flex-col w-fit border-l-[4px] border-black ml-2">
+                    <input type="text" name="" class="ml-2 mb-5" id="inputName" placeholder="Insert one character, E.g: a">
+                    <div>
+                        <a class="p-2 bg-blue-200 ml-2 rounded pt-2" href="#" onclick="updateHref('left')">Name LIKE KIRI</a>
+                        <a class="p-2 bg-blue-200 rounded pt-2" href="#" onclick="updateHref('middle')">Name LIKE TENGAH</a>
+                        <a class="p-2 bg-blue-200 ml-2 rounded pt-2" href="#" onclick="updateHref('right')">Name LIKE KANAN</a>
+                    </div>
+      
+                </div>
+            </div>
            <div class="items-center ">
                <div class="overflow-x-hidden sm:-mx-6 lg:-mx-8">
                    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -149,8 +163,14 @@
        </div>
 
      <script>
-        const harga = document.querySelector('.harga').value;
-        console.log(harga);
+         function updateHref(position) {
+        console.log("Function called");
+        var inputText = document.getElementById('inputName').value;
+        console.log("Input text: " + inputText);
+        var href = "/nameLike/" + position + "/" + inputText;
+        console.log("New href: " + href);
+        window.location.href = href;
+    }
      </script>
 </body>
 </html>

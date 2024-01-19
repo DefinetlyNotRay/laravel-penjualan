@@ -13,11 +13,11 @@ class UpdatePasswords extends Command
 
     public function handle()
     {
-        $users = User::where('name', 'k')->get();
+        $users = User::where('name', 'a')->get();
 
         foreach ($users as $user) {
             $user->update([
-                'password' => Hash::make('k'),
+                'password' => Hash::make('a'),
             ]);
         }
 

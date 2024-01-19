@@ -4,8 +4,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\QueryController;
 use App\Http\Controllers\strukController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\cruduserControler;
+use App\Http\Controllers\cruduserController;
 use App\Http\Controllers\crudbarangController;
 
 /*
@@ -46,16 +49,41 @@ Route::middleware(['auth','no-cache'])->group(function(){
     Route::get('/history', [AdminController::class,'history']);
 
 
+    // barang CRUD Function
     Route::post('/barangAddData', [crudbarangController::class,'add']);
     Route::put('/barangEditData/{id}', [crudbarangController::class,'edit']);
     Route::delete('/barangDelete/{id}', [crudbarangController::class,'delete']);
     
-    
+    // user crud function
+    Route::post('/userAddAccount', [cruduserController::class,'add'])->middleware('web');
+    Route::put('/userEditData/{id}', [cruduserController::class,'edit']);
+    Route::delete('/userDelete/{id}', [cruduserController::class,'delete']);
+
+
     // Tombol-tombol yang ada di web
     Route::get('/print', [strukController::class,'struk']);
     Route::get('/logout',[UserController::class, 'logout']);
     Route::get('/getHarga', [BarangController::class,'getHarga']);
     Route::get('/barangEdit/{id}', [AdminController::class,'editView']);
     Route::get('/barangAdd', [AdminController::class,'addView']);
-    Route::get('/getHarga', [BarangController::class,'getHarga']);
+    Route::get('/kasirAdd', [AdminController::class,'addViewKasir']);
+    Route::get('/userEdit/{id}', [AdminController::class,'editViewKasir']);
+
+
+
+    // Query Basis data
+    Route::get('/stockOrder/asc', [QueryController::class, 'ascend']);
+    Route::get('/stockOrder/desc', [QueryController::class,'descend']);
+    Route::get('/nameLike/left/{name}', [QueryController::class,'likeLeft']);
+    Route::get('/nameLike/middle/{name}', [QueryController::class,'likeMiddle']);
+    Route::get('/nameLike/right/{name}', [QueryController::class,'likeRight']);
+    
+    //user
+    Route::get('/nameOrder/asc', [QueryController::class, 'ascendUser']);
+    Route::get('/nameOrder/desc', [QueryController::class,'descendUser']);
+    Route::get('/nameLikeUser/left/{name}', [QueryController::class,'likeLeftUser']);
+    Route::get('/nameLikeUser/middle/{name}', [QueryController::class,'likeMiddleUser']);
+    Route::get('/nameLikeUser/right/{name}', [QueryController::class,'likeRightUser']);
+
+
 });
