@@ -14,7 +14,11 @@
     @push('head')
     <script src="{{ asset('js/components/script.js')}}"></script>
     @endpush
-
+    <style>
+        #alert-3,#alert-4,#alert-5 {
+            z-index: 9999; /* Set a high z-index value */
+        }
+    </style>
 
 
     
@@ -53,8 +57,57 @@
         </div>
         </div>
       </nav>
+      @if(session('message'))
+        <div id="alert-3" class="absolute z-10 flex items-center p-4 mb-4 ml-5 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="text-sm font-medium ms-3">
+             {{session('message')}}
+            </div>
+            <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-3" aria-label="Close">
+              <span class="sr-only">Close</span>
+              <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+              </svg>
+            </button>
+          </div>
+        @endif
+        <div id="alert-4" class="absolute z-10 flex items-center hidden p-4 mb-4 ml-5 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="text-sm font-medium ms-3">
+             Successfully added an item!
+            </div>
+            <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-4" aria-label="Close">
+              <span class="sr-only">Close</span>
+              <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+              </svg>
+            </button>
+          </div>
+          <div id="alert-5" class="absolute z-10 flex items-center hidden p-4 mb-4 ml-5 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="text-sm font-medium ms-3">
+             Successfully deleted an item!
+            </div>
+            <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-5" aria-label="Close">
+              <span class="sr-only">Close</span>
+              <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+              </svg>
+            </button>
+          </div>
       <section class="mt-[2.3rem] main-section">
+        
      <div>           
+       
         <div class="flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -318,14 +371,13 @@
                         <input type="text" id="searchInput" oninput="filterOptions()" placeholder="Search...">
                         <select id="searchComboBox">
                             @foreach($barang as $items)
-                            <option value="{{ $items->nama_barang }}">{{ $items->nama_barang }}</option>
+                                <option value="{{ $items->nama_barang }}" data-stock="{{ $items->stock }}" @if($items->stock == 0) disabled @endif>{{ $items->nama_barang }}</option>
                             @endforeach
-                            
                         </select>
                     </div>
                     <div class="flex flex-col w-18">
                         <label for="">Quantitas</label>
-                        <input type="text" id="quantitasInput" value="0">
+                        <input type="text" id="quantitasInput" value="0" oninput="checkStock()">
                     </div>
                     {{-- <div class="flex flex-col w-14">
                         <label for="">Diskon</label>
@@ -342,25 +394,96 @@
         </div>
       </section>
       <script>
-        
+        document.addEventListener('DOMContentLoaded', function() {
+        const searchComboBox = document.getElementById('searchComboBox');
+
+        // Add change event listener to update disabled state based on stock value
+        searchComboBox.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const stock = selectedOption.getAttribute('data-stock');
+            
+            // If stock is 0, disable the option
+            if (stock == 0) {
+                selectedOption.disabled = true;
+            } else {
+                selectedOption.disabled = false;
+            }
+        });
+
+        // Disable options initially based on their data-stock attribute
+        for (let i = 0; i < searchComboBox.options.length; i++) {
+            const option = searchComboBox.options[i];
+            const stock = option.getAttribute('data-stock');
+
+            if (stock == 0) {
+                option.disabled = true;
+            } else {
+                option.disabled = false;
+            }
+        }
+    });
+       async function checkStock() {
+        var selectedOption = document.getElementById("searchComboBox").value;
+        var quantitas = document.getElementById("quantitasInput").value;
+
+        // Validate the quantity
+        if (!isFinite(quantitas) || parseFloat(quantitas) < 0) {
+            alert("Please enter a valid non-negative quantity.");
+            return false;
+        }
+
+        // Use AJAX to fetch the available stock from the server
+        try {
+            var response = await $.ajax({
+                url: '/getStock',
+                method: 'GET',
+                data: { nama_barang: selectedOption }
+            });
+
+            if (response.stock !== undefined) {
+                // Check if the entered quantity exceeds the available stock
+                if (parseInt(quantitas) > response.stock) {
+                    alert("Insufficient stock for the selected option.");
+                    // You may choose to clear the input or take other actions
+                }
+            } else {
+                alert("Stock information not found for the selected option");
+            }
+        } catch (error) {
+            alert("Error fetching stock information: " + error);
+        }
+    }
+
             var originalOptions = Array.from(document.getElementById('searchComboBox').options);
             function filterOptions() {
-                // Get the input value
-                var input = document.getElementById('searchInput').value.toLowerCase();
-                
-                // Filter the options based on the input
-                var filteredOptions = originalOptions.filter(function (option) {
-                    return option.value.toLowerCase().includes(input);
-                });
+    // Get the input value
+    var input = document.getElementById('searchInput').value.toLowerCase();
 
-                // Clear the current options
-                document.getElementById('searchComboBox').innerHTML = '';
+    // Filter the options based on the input and stock
+    var filteredOptions = originalOptions.map(function (option) {
+        var clonedOption = option.cloneNode(true);
+        var stock = parseInt(option.getAttribute('data-stock'));
+        
+        if (!option.value.toLowerCase().includes(input) || stock === 0) {
+            clonedOption.disabled = true;
+        } else {
+            clonedOption.disabled = false;
+        }
+        
+        return clonedOption;
+    });
 
-                // Append the filtered options to the combo box
-                filteredOptions.forEach(function (option) {
-                    document.getElementById('searchComboBox').appendChild(option.cloneNode(true));
-                });
-            }
+    // Clear the current options
+    document.getElementById('searchComboBox').innerHTML = '';
+
+    // Append the filtered options to the combo box
+    filteredOptions.forEach(function (option) {
+        document.getElementById('searchComboBox').appendChild(option);
+    });
+}
+
+
+
             function diskon() {
             const diskon = parseFloat(document.getElementById('diskon').value);
             const jumlahHarga = parseFloat(document.getElementById('harga-jumlah').textContent);
@@ -447,7 +570,10 @@
 
                 // Update the total harga
                 jumlahBarang();
+                const alertSubmit = document.getElementById('alert-4')
+                alertSubmit.classList.remove('hidden');
                 updateTotalHarga();
+                
             } else {
                 alert("Harga not found for the selected option");
             }
@@ -480,6 +606,7 @@
             const userid = {{ auth()->user()->id }};
             var secondColumnValues = [];
             var thirdColumnValues = [];
+            console.log(qty)
                 // Iterate through rows to calculate total harga
                 for (var i = 0; i < tableRows.length; i++) {
                     
@@ -499,7 +626,7 @@
 
             // Calculate the discounted total harga
             const discountedHarga = jumlahHarga - (jumlahHarga * (diskon / 100));
-
+            const discountedHarga1 = jumlahHarga + (jumlahHarga * (diskon / 100));
             // Send data to the server
             $.ajax({
                 url: '/print',
@@ -513,11 +640,15 @@
                     quantitasBarang: thirdColumnValues,
                     user: userid,
                     jumlahTunai: tunai,
+                    beforeDiscount: discountedHarga1,
+                    kembalianTotal: kembalian,
 
                     
                 },
                 success: function (response) {
                     console.log(response.message);
+        // Assuming the response contains the URL to redirect
+            window.location.href = response.redirect_url;
                 },
                 error: function (error) {
                     console.error("Error:", error);
@@ -564,10 +695,14 @@
                     // Update the total harga after deleting the row
                     updateTotalHarga();
                     jumlahBarang()
+                    const alertSubmit = document.getElementById('alert-5')
+                 alertSubmit.classList.remove('hidden');
                 } else {
                     // If it's an original row, clear the content of cells (excluding the first cell)
                     for (var i = 1; i < row.cells.length - 1; i++) {
                         row.cells[i].textContent = "";
+                        const alertSubmit = document.getElementById('alert-5')
+                 alertSubmit.classList.remove('hidden');
                     }
                     // Update the total harga after deleting the row
                     jumlahBarang()

@@ -13,12 +13,10 @@ return new class extends Migration
     {
         Schema::create('struk', function (Blueprint $table) {
             $table->id('id_struk');
-            
-            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id');
             $table->unsignedBigInteger('id_barang');
-            
-            $table->foreign('id_user')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('id_barang')->references('id_barang')->on('barang')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->json('items'); // Column to store items as a JSON array
             $table->integer('jumlah_barang');
             $table->integer('diskon');
             $table->integer('total');
@@ -27,6 +25,8 @@ return new class extends Migration
             $table->integer('kembalian');
             $table->timestamps();
            
+            
+
         });
     }
 

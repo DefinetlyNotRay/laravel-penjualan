@@ -6,58 +6,74 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class cruduserController extends Controller
+class CrudUserController extends Controller
 {
-    function add(Request $request){
+    // Menambahkan pengguna baru
+    public function add(Request $request){
+        // Validasi data yang diterima dari formulir
         $request->validate([
             'nama' => 'required',
             'password' => 'required',
             'level' => 'required'
         ]);
+
+        // Membuat pengguna baru
         User::create([
             'name' => $request->nama,
             'password' => bcrypt($request->password),
             'level' => $request->level
         ]);
-        return redirect('/CRUDKasir')->with('success', 'Account created successfully!');
 
+        // Mengarahkan kembali ke halaman CRUDKasir dengan pesan sukses
+        return redirect('/CRUDKasir')->with('message', 'Akun berhasil dibuat!');
     }
 
+    // Mengedit data pengguna berdasarkan ID
     public function edit(Request $request, $id) {
+        // Mengambil data pengguna berdasarkan ID
         $user = User::find($id);
     
+        // Jika pengguna tidak ditemukan, mengarahkan kembali dengan pesan error
         if (!$user) {
-            return redirect('/CRUDKasir')->with('error', 'User not found');
+            return redirect('/CRUDKasir')->with('error', 'Pengguna tidak ditemukan');
         }
     
+        // Validasi data yang diterima dari formulir
         $request->validate([
             'nama' => 'required',
             'password' => 'required',
             'level' => 'required'
         ]);
     
-        // Update the attributes on the instance
+        // Mengupdate atribut pengguna dengan data baru
         $user->update([
             'name' => $request->nama,
             'password' => bcrypt($request->password),
             'level' => $request->level
         ]);
     
-        return redirect('/CRUDKasir');
+        // Mengarahkan kembali ke halaman CRUDKasir dengan pesan sukses
+        return redirect('/CRUDKasir')->with('message', 'Akun berhasil diperbarui');
     }
 
-
+    // Menghapus data pengguna berdasarkan ID
     public function delete($id) {
-        $Kasir = User::find($id);
+        // Mengambil data pengguna berdasarkan ID
+        $kasir = User::find($id);
     
-        if (!$Kasir) {
-            return redirect('/CRUDKasir')->with('error', 'User not found');
+        // Jika pengguna tidak ditemukan, mengarahkan kembali dengan pesan error
+        if (!$kasir) {
+            return redirect('/CRUDKasir')->with('error', 'Pengguna tidak ditemukan');
         }
     
-        // Update the attributes on the instance
-        $Kasir->delete();
+        // Menghapus data pengguna
+        $kasir->delete();
+
+        // Mengatur ulang nilai otomatis penambahan ID pengguna
         $totalRow = DB::table('users')->max('id');
         DB::statement("ALTER TABLE users AUTO_INCREMENT =  $totalRow");   
-        return redirect('/CRUDKasir');
+
+        // Mengarahkan kembali ke halaman CRUDKasir dengan pesan sukses
+        return redirect('/CRUDKasir')->with('message', 'Akun berhasil dihapus');
     }
 }

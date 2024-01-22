@@ -52,4 +52,9 @@ class User extends Authenticatable
         'admin',
         'kasir',
     ];
+
+    public function isAdmin()
+{
+    return $this->level === 'admin';
+}
 }
